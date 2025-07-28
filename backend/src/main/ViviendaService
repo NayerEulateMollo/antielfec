@@ -1,0 +1,122 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class ViviendaService {
+    private List<Vivienda> viviendas;
+    private int nextId; // Para generar IDs únicos para las viviendas
+
+    public ViviendaService() {
+        this.viviendas = new ArrayList<>();
+        this.nextId = 1;
+        // Simular algunas viviendas preexistentes para el usuario con ID 1
+        viviendas.add(new Vivienda(nextId++, "Mi Casa", "Av. Principal 123", 1));
+        viviendas.add(new Vivienda(nextId++, "Departamento de Verano", "Calle del Sol 45", 1));
+    }
+
+    /**
+     * Añade una nueva vivienda para un usuario específico.
+     * @param nombre El nombre de la vivienda.
+     * @param direccion La dirección de la vivienda.
+     * @param idUsuario El ID del usuario propietario de la vivienda.
+     * @return La vivienda añadida o null si ya existe una vivienda con el mismo nombre para el usuario.
+     */
+    public Vivienda añadirVivienda(String nombre, String direccion, int idUsuario) {
+        // Validación: No permitir nombres duplicados para el mismo usuario
+        boolean existeVivienda = viviendas.stream()
+            .anyMatch(v -> v.getIdUsuario() == idUsuario && v.getNombre().equalsIgnoreCase(nombre));
+
+        if (existeVivienda) {
+            System.out.println("ERROR: Ya existe una vivienda con el nombre '" + nombre + "' para este usuario.");
+            return null;
+        }
+
+        Vivienda nuevaVivienda = new Vivienda(nextId++, nombre, direccion, idUsuario);
+        viviendas.add(nuevaVivienda);
+        System.out.println("Vivienda añadida exitosamente: " + nuevaVivienda.getNombre());
+        return nuevaVivienda;
+    }
+
+    /**
+     * Modifica una vivienda existente.
+     * @param idVivienda El ID de la vivienda a modificar.
+     * @param nuevoNombre El nuevo nombre para la vivienda (puede ser null si no se modifica).
+     * @param nuevaDireccion La nueva dirección para la vivienda (puede ser null si no se modifica).
+     * @param idUsuario El ID del usuario al que pertenece la vivienda (para validación de propiedad).
+     * @return La vivienda modificada o null si no se encuentra o el nombre ya existe para el usuario.
+     */
+    public Vivienda modificarVivienda(int idVivienda, String nuevoNombre, String nuevaDireccion, int idUsuario) {
+        Optional<Vivienda> viviendaOpt = viviendas.stream()
+            .filter(v -> v.getId() == idVivienda && v.getIdUsuario() == idUsuario)
+            .findFirst();
+
+        if (viviendaOpt.isEmpty()) {
+            System.out.println("ERROR: Vivienda con ID " + idVivienda + " no encontrada o no pertenece al usuario.");
+            return null;
+        }
+
+        Vivienda vivienda = viviendaOpt.get();
+
+        // Validar si el nuevo nombre ya existe para otra vivienda del mismo usuario (excluyendo la vivienda actual)
+        if (nuevoNombre != null && !nuevoNombre.equalsIgnoreCase(vivienda.getNombre())) {
+            boolean nombreDuplicado = viviendas.stream()
+                .anyMatch(v -> v.getId() != idVivienda && v.getIdUsuario() == idUsuario && v.getNombre().equalsIgnoreCase(nuevoNombre));
+            if (nombreDuplicado) {
+                System.out.println("ERROR: Ya existe otra vivienda con el nombre '" + nuevoNombre + "' para este usuario.");
+                return null;
+            }
+            vivienda.setNombre(nuevoNombre);
+        }
+
+        if (nuevaDireccion != null && !nuevaDireccion.isEmpty()) {
+            vivienda.setDireccion(nuevaDireccion);
+        }
+
+        System.out.println("Vivienda modificada exitosamente: " + vivienda.getNombre());
+        return vivienda;
+    }
+
+    /**
+     * Elimina una vivienda por su ID.
+     * @param idVivienda El ID de la vivienda a eliminar.
+     * @param idUsuario El ID del usuario propietario de la vivienda (para validación de propiedad).
+     * @return true si la vivienda fue eliminada, false en caso contrario.
+     */
+    public boolean eliminarVivienda(int idVivienda, int idUsuario) {
+        boolean removed = viviendas.removeIf(v -> v.getId() == idVivienda && v.getIdUsuario() == idUsuario);
+        if (removed) {
+            System.out.println("Vivienda con ID " + idVivienda + " eliminada exitosamente.");
+        } else {
+            System.out.println("ERROR: Vivienda con ID " + idVivienda + " no encontrada o no pertenece al usuario.");
+        }
+        return removed;
+    }
+
+    /**
+     * Obtiene una lista de todas las viviendas asociadas a un usuario.
+     * @param idUsuario El ID del usuario.
+     * @return Una lista de viviendas.
+     */
+    public List<Vivienda> obtenerViviendasPorUsuario(int idUsuario) {
+        List<Vivienda> userViviendas = new ArrayList<>();
+        for (Vivienda v : viviendas) {
+            if (v.getIdUsuario() == idUsuario) {
+                userViviendas.add(v);
+            }
+        }
+        return userViviendas;
+    }
+
+    /**
+     * Obtiene una vivienda por su ID y el ID del usuario.
+     * @param idVivienda El ID de la vivienda.
+     * @param idUsuario El ID del usuario.
+     * @return La vivienda encontrada o null.
+     */
+    public Vivienda obtenerViviendaPorId(int idVivienda, int idUsuario) {
+        return viviendas.stream()
+            .filter(v -> v.getId() == idVivienda && v.getIdUsuario() == idUsuario)
+            .findFirst()
+            .orElse(null);
+    }
+}
