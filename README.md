@@ -76,38 +76,3 @@ graph LR
     BaseDeDatos -- "base.sql" --> BaseDeDatos
     ServidorAplicacion -- "carpeta backend" --> ServidorAplicacion
     Router -- "red Wifi" --> Router
-## Módulo: Gestión de Viviendas
-
-Este módulo es una parte fundamental del proyecto **Anti-Elfec**, diseñado para permitir a los usuarios registrados administrar eficientemente las diferentes ubicaciones (viviendas) donde desean monitorear y controlar sus dispositivos inteligentes. La gestión de viviendas es esencial para organizar y contextualizar el consumo energético en múltiples propiedades o espacios dentro de una única cuenta de usuario.
-
-### Propósito
-
-El objetivo principal de este módulo es proporcionar una interfaz intuitiva para que los usuarios puedan:
-* Registrar nuevas viviendas asociadas a su cuenta.
-* Actualizar la información de las viviendas existentes (nombre, dirección).
-* Eliminar viviendas que ya no necesiten gestionar.
-* Visualizar un listado de todas sus viviendas registradas.
-
-### Funcionalidades Clave
-
-Actualmente, el módulo de **Gestión de Viviendas** implementa las siguientes operaciones CRUD (Crear, Leer, Actualizar, Eliminar) básicas:
-
-* **Añadir Vivienda:** Permite al usuario registrar una nueva propiedad en el sistema, asignándole un nombre único y una dirección. El sistema valida que no existan nombres de vivienda duplicados para el mismo usuario.
-* **Ver Viviendas:** Muestra una lista detallada de todas las viviendas que el usuario tiene registradas en su cuenta, incluyendo su ID, nombre y dirección.
-* **Modificar Vivienda:** Permite al usuario seleccionar una vivienda existente por su ID y actualizar su nombre y/o dirección. Se incluye validación para prevenir nombres duplicados después de la modificación.
-* **Eliminar Vivienda:** Facilita la eliminación de una vivienda del registro del usuario, previa confirmación para evitar borrados accidentales.
-
-### Implementación Actual (Prototipo de Consola)
-
-La versión actual de este módulo ha sido desarrollada como un **prototipo de aplicación de consola en Java**. Esto permite demostrar la lógica de negocio central y la interacción de las clases (`Usuario`, `Vivienda`, `ViviendaService`) de manera funcional, sin la complejidad de una interfaz gráfica completa o una base de datos persistente real. Los datos de las viviendas se manejan en memoria (`ArrayList`), lo que significa que se reinician cada vez que la aplicación se ejecuta.
-
-### Próximos Pasos y Expansión
-
-Este prototipo sienta las bases para futuras integraciones, incluyendo:
-* **Persistencia de Datos:** Conexión a una base de datos (ej. MySQL/PostgreSQL) para almacenar las viviendas de forma permanente.
-* **Integración con Dispositivos:** Asociación de dispositivos inteligentes a viviendas específicas.
-* **Interfaz de Usuario Gráfica:** Desarrollo de una interfaz de usuario completa (móvil o web) para una experiencia de usuario más rica.
-* **Validaciones y Errores:** Implementación de un manejo de errores y validaciones más robusto.
-
----
-Puedes copiar este texto y pegarlo directamente en tu archivo `README.md`, ajustando cualquier detalle si lo consideras necesario.
