@@ -11,7 +11,6 @@ public class Vivienda {
         this.idUsuario = idUsuario;
     }
 
-    // Getters
     public int getId() {
         return id;
     }
