@@ -1,0 +1,48 @@
+public class Vivienda {
+    private int id;
+    private String nombre;
+    private String direccion;
+    private int idUsuario; // Para asociar la vivienda con un usuario
+
+    public Vivienda(int id, String nombre, String direccion, int idUsuario) {
+        this.id = id;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.idUsuario = idUsuario;
+    }
+
+    // Getters
+    public int getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    // Setters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    @Override
+    public String toString() {
+        return "Vivienda [ID=" + id + ", Nombre='" + nombre + "', Dirección='" + direccion + "', ID Usuario=" + idUsuario + "]";
+    }
+}
