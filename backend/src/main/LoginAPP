@@ -1,0 +1,43 @@
+package AntiElfec;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class LoginApp {
+
+    private static HashMap<String, Usuario> usuarios = new HashMap<>();
+
+    public static void main(String[] args) {
+        inicializarUsuarios();
+        Usuario usuarioActual = iniciarSesion();
+
+          if (usuarioActual != null) {
+        
+        System.out.println("\n Redirigiendo al sistema AntiElfec...");
+        AntiElfecApp.main(null);  
+        }
+    }
+
+    private static void inicializarUsuarios() {
+        usuarios.put("admin@smartapp.com", new Usuario("admin@smartapp.com", "admin123"));
+        usuarios.put("usuario@casa.com", new Usuario("usuario@casa.com", "clave456"));
+    }
+
+    private static Usuario iniciarSesion() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("==== INICIO DE SESIÓN ====");
+
+        System.out.print("Correo electrónico: ");
+        String email = scanner.nextLine().trim();
+
+        System.out.print("Contraseña: ");
+        String contraseña = scanner.nextLine().trim();
+
+        if (usuarios.containsKey(email) && usuarios.get(email).verificarContraseña(contraseña)) {
+            System.out.println(" Bienvenido, " + email);
+            return usuarios.get(email);
+        } else {
+            System.out.println("Usuario o contraseña incorrectos.");
+            return null;
+        }
+    }
+}
